@@ -75,7 +75,7 @@ void red_black_tree::preorder(Node* node) const {
         return;
     }
 
-    std::cout << node->value << " " << node->color << std::endl;
+    std::cout << node->value << " - " << node->color << std::endl;
     preorder(node->left);
     preorder(node->right);
 }
@@ -86,7 +86,7 @@ void red_black_tree::inorder(Node* node) const {
     }
 
     inorder(node->left);
-    std::cout << node->value << " " << node->color << std::endl;
+    std::cout << node->value << " - " << node->color << std::endl;
     inorder(node->right);
 }
 
@@ -97,7 +97,7 @@ void red_black_tree::postorder(Node* node) const {
 
     postorder(node->left);
     postorder(node->right);
-    std::cout << node->value << " " << node->color << std::endl;
+    std::cout << node->value << " - " << node->color << std::endl;
 }
 
 void red_black_tree::level_order() const {
@@ -121,6 +121,45 @@ void red_black_tree::level_order() const {
             q.push(current->right);
         }
     }
+}
+
+Node* red_black_tree::copy_tree(Node* node) {
+    if(!node) {
+        return nullptr;
+    }
+
+    Node* new_node = new Node(node->value);
+    new_node->color = node->color;
+    new_node->left = copy_tree(node->left);
+    new_node->right = copy_tree(node->right);
+
+    return new_node;
+}
+
+bool red_black_tree::search(Node* node, int val) {
+    if(!node) {
+        return false;
+    }
+
+    if(node->value == val) {
+        return true;
+    } else if(node->value < val) {
+        return search(node->right, val);
+    } else {
+        return search(node->left, val);
+    }
+}
+
+bool red_black_tree::search(int val) {
+    if(!root) {
+        return false;
+    }
+
+    return search(root, val);
+}
+
+void red_black_tree::balancing_tree(Node*& root) {
+    
 }
 
 
