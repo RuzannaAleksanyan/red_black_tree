@@ -158,8 +158,151 @@ bool red_black_tree::search(int val) {
     return search(root, val);
 }
 
+Node* red_black_tree::get_min(Node* node) {
+    while(node->left) {
+        node = node->left;
+    }
+
+    return node;
+}
+
+int red_black_tree::get_min() {
+    Node* tmp = get_min(root);
+    return tmp->value;
+}
+
+Node* red_black_tree::get_max(Node* node) {
+    while(node->right) {
+        node = node->right;
+    }
+
+    return node;
+}
+
+int red_black_tree::get_max() {
+    Node* tmp = get_max(root);
+    return tmp->value;
+}
+
+Node* red_black_tree::get_root() {
+    return root;
+}
+
+bool red_black_tree::is_empty() const {
+    if(!root) {
+        return true;
+    }
+
+    return false;
+}
+
+int red_black_tree::get_height(Node* node) {
+    if(!node) {
+        return -1;
+    }
+
+    int left_height = get_height(node->left);
+    int right_height = get_height(node->right);
+
+    return std::max(left_height, right_height) + 1;
+}
+
+int red_black_tree::get_height() {
+    return get_height(root);
+}
+
 void red_black_tree::balancing_tree(Node*& root) {
-    
+    Node* parent = nullptr;
+    Node* grandparent = nullptr;
+
+    while (root != this->root && root->color == "RED" && root->parent->color == "RED") {
+        parent = root->parent;
+        grandparent = parent->parent;
+
+        if (parent == grandparent->left) {
+            Node* uncle = grandparent->right;
+
+            if (uncle != nullptr && uncle->color == "RED") {
+                grandparent->color = "RED";
+                parent->color = "BLACK";
+                uncle->color = "BLACK";
+                root = grandparent;
+            } else {
+                if (root == parent->right) {
+                    root = parent;
+                    left_rotate(root);
+                }
+
+                parent->color = "BLACK";
+                grandparent->color = "RED";
+                right_rotate(grandparent);
+            }
+        } else { 
+            Node* uncle = grandparent->left;
+
+            if (uncle != nullptr && uncle->color == "RED") {
+                grandparent->color = "RED";
+                parent->color = "BLACK";
+                uncle->color = "BLACK";
+                root = grandparent;
+            } else {
+                if (root == parent->left) {
+                    root = parent;
+                    right_rotate(root);
+                }
+
+                parent->color = "BLACK";
+                grandparent->color = "RED";
+                left_rotate(grandparent);
+            }
+        }
+    }
+
+    this->root->color = "BLACK"; 
+}
+
+void red_black_tree::left_rotate(Node*& node) {
+    Node* right_child = node->right;
+    node->right = right_child->left;
+
+    if (right_child->left != nullptr) {
+        right_child->left->parent = node;
+    }
+
+    right_child->parent = node->parent;
+
+    if (node->parent == nullptr) {
+        this->root = right_child;
+    } else if (node == node->parent->left) {
+        node->parent->left = right_child;
+    } else {
+        node->parent->right = right_child;
+    }
+
+    right_child->left = node;
+    node->parent = right_child;
+}
+
+void red_black_tree::right_rotate(Node*& node) {
+    Node* left_child = node->left;
+    node->left = left_child->right;
+
+    if (left_child->right != nullptr) {
+        left_child->right->parent = node;
+    }
+
+    left_child->parent = node->parent;
+
+    if (node->parent == nullptr) {
+        this->root = left_child;
+    } else if (node == node->parent->left) {
+        node->parent->left = left_child;
+    } else {
+        node->parent->right = left_child;
+    }
+
+    left_child->right = node;
+    node->parent = left_child;
 }
 
 

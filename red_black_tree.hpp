@@ -12,9 +12,9 @@ private:
     Node* copy_tree(Node* root);
 
     bool search(Node* node, int val);
-    // Node* get_min(Node* node);
-    // int get_max(Node* node);
-    // int get_height(Node* node);
+    Node* get_min(Node* node);
+    Node* get_max(Node* node);
+    int get_height(Node* node);
     // Node* insert(Node* node, int val);
     // Node* delete_node(Node* node, int key);
 
@@ -24,8 +24,8 @@ private:
 
     // int balancing_factor(Node* node); 
     // bool is_balanced(Node* node);
-    // Node* ll_rotation(Node* node);
-    // Node* rr_rotation(Node* node);
+    void left_rotate(Node*& node);
+    void right_rotate(Node*& node);
 
 public:
     red_black_tree();
@@ -39,13 +39,14 @@ public:
 
     ~red_black_tree();
 
-    // Node* get_root();
+    Node* get_root();
     bool search(int val);
-    // int get_min();
-    // int get_max();
+    int get_min();
+
+    int get_max();
     // int get_successor(const int& key) const;
     // int get_predecessor(const int& key) const;
-    // int get_height();
+    int get_height();
     // void insert(int val);   
     // void delete_node(int key);
 
@@ -56,7 +57,7 @@ public:
 
     // bool balancing_factor();
     // int get_balancing_factor(Node* node);
-    // bool is_empty() const;
+    bool is_empty() const;
     // bool validate_rbt_properties() const;
 };
 
